@@ -192,7 +192,7 @@ async def card_response(context: TurnContext) -> web.Response:
 
 async def handle_conversation_update(context: TurnContext) -> web.Response:
     if context.activity.members_added[0].id != context.activity.recipient.id:
-        response = await create_reply_activity(context.activity, 'Welcome to the Rich Cards Bot!')
+        response = await create_reply_activity(context.activity, 'Welcome to the Super Nany Bot!')
         await context.send_activity(response)
     return web.Response(status=200)
 
