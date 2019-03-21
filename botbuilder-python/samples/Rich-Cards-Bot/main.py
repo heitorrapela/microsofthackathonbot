@@ -32,8 +32,8 @@ import time
 import datetime
 import threading
 from threading import Thread
-#from pydrive.auth import GoogleAuth
-#from pydrive.drive import GoogleDrive
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
 from pathlib import Path
 
 class FrameManager(object):
@@ -45,10 +45,10 @@ class FrameManager(object):
         self.cam = cv2.VideoCapture(0)
         self.ret, self.frame = self.cam.read()
         
-        #self.gauth = GoogleAuth()
-        #self.gauth.LocalWebserverAuth()
-        #self.drive = GoogleDrive(self.gauth)
-        #self.fid = "1YvqVtqvseQk_swQ1Qj0BBI3g8mgfYQmb"
+        self.gauth = GoogleAuth()
+        self.gauth.LocalWebserverAuth()
+        self.drive = GoogleDrive(self.gauth)
+        self.fid = "1YvqVtqvseQk_swQ1Qj0BBI3g8mgfYQmb"
         
     def update(self):	
         self.lock.acquire()
@@ -123,7 +123,7 @@ class Vision(object):
             x2 = faceRect.right()
             y2 = faceRect.bottom()
             image = cv2.rectangle(image, (x1, y1), (x2, y2), (0,0,255))
-        if len(dets) > 0:
+        if len(dets) >= 2:
             st = 'log/'+st+'.jpg'
             cv2.imwrite(st, image)
             fm.append_list(st)
