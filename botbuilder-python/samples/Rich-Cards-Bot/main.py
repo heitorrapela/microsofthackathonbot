@@ -7,6 +7,8 @@ This sample shows how to use different types of rich cards.
 
 
 from aiohttp import web
+from pygame import mixer # Load the required library
+
 from botbuilder.schema import (Activity, ActivityTypes,
                                AnimationCard, AudioCard, Attachment,
                                ActionTypes, CardAction,
@@ -50,6 +52,9 @@ def create_animation_card() -> Attachment:
     return CardFactory.animation_card(card)
 
 def create_lullaby_play() -> Attachment:
+    mixer.init()
+    mixer.music.load('./twinkle_twinkle_little_star.mp3')
+    mixer.music.play()
     pass
 
 async def create_reply_activity(request_activity: Activity, text: str, attachment: Attachment = None) -> Activity:
@@ -96,7 +101,7 @@ async def card_response(context: TurnContext) -> web.Response:
     choice_dict = {
         '1': [create_adaptive_card], 'check image': [create_adaptive_card],
         '2': [create_animation_card], 'monitor environment': [create_animation_card],
-        '3': [create_lullaby_play], 'lullaby', [create_lullaby_play]
+        '3': [create_lullaby_play], 'lullaby': [create_lullaby_play],
     }
 
     # Get the functions that will generate the card(s) for our response
