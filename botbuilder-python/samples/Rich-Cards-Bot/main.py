@@ -49,86 +49,8 @@ def create_animation_card() -> Attachment:
                          subtitle='Animation Card')
     return CardFactory.animation_card(card)
 
-
-def create_audio_card() -> Attachment:
-    card = AudioCard(media=[MediaUrl(url='http://www.wavlist.com/movies/004/father.wav')],
-                     title='I am your father',
-                     subtitle='Star Wars: Episode V - The Empire Strikes Back',
-                     text='The Empire Strikes Back (also known as Star Wars: Episode V – The Empire Strikes '
-                          'Back) is a 1980 American epic space opera film directed by Irvin Kershner. Leigh '
-                          'Brackett and Lawrence Kasdan wrote the screenplay, with George Lucas writing the '
-                          'film\'s story and serving as executive producer. The second installment in the '
-                          'original Star Wars trilogy, it was produced by Gary Kurtz for Lucasfilm Ltd. and '
-                          'stars Mark Hamill, Harrison Ford, Carrie Fisher, Billy Dee Williams, Anthony '
-                          'Daniels, David Prowse, Kenny Baker, Peter Mayhew and Frank Oz.',
-                     image=ThumbnailUrl(url='https://upload.wikimedia.org/wikipedia/en/3/3c/SW_-_Empire_Strikes_Back.jpg'),
-                     buttons=[CardAction(type=ActionTypes.open_url,
-                                         title='Read more',
-                                         value='https://en.wikipedia.org/wiki/The_Empire_Strikes_Back')])
-    return CardFactory.audio_card(card)
-
-
-def create_hero_card() -> Attachment:
-    card = HeroCard(title='',
-                    images=[CardImage(url='https://sec.ch9.ms/ch9/7ff5/e07cfef0-aa3b-40bb-9baa-7c9ef8ff7ff5/buildreactionbotframework_960.jpg')],
-                    buttons=[CardAction(type=ActionTypes.open_url,
-                                        title='Get Started',
-                                        value='https://docs.microsoft.com/en-us/azure/bot-service/')],
-                    )
-    return CardFactory.hero_card(card)
-
-
-def create_video_card() -> Attachment:
-    card = VideoCard(title='Big Buck Bunny',
-                     subtitle='by the Blender Institute',
-                     text='Big Buck Bunny (code-named Peach) is a short computer-animated comedy film by the Blender '
-                          'Institute, part of the Blender Foundation. Like the foundation\'s previous film Elephants '
-                          'Dream, the film was made using Blender, a free software application for animation made by '
-                          'the same foundation. It was released as an open-source film under Creative Commons License '
-                          'Attribution 3.0.',
-                     media=[MediaUrl(url='http://download.blender.org/peach/bigbuckbunny_movies/'
-                                          'BigBuckBunny_320x180.mp4')],
-                     buttons=[CardAction(type=ActionTypes.open_url,
-                                         title='Learn More',
-                                         value='https://peach.blender.org/')])
-    return CardFactory.video_card(card)
-
-
-def create_receipt_card() -> Attachment:
-    card = ReceiptCard(title='John Doe', facts=[Fact(key="Order Number", value="1234"),
-                                                Fact(key="Payment Method", value="VISA 5555-****")],
-                       items=[ReceiptItem(title="Data Transfer", price="$38.45", quantity="368",
-                                          image=CardImage(url="https://github.com/amido/azure-vector-icons/raw/master/"
-                                                              "renders/traffic-manager.png")),
-                              ReceiptItem(title="App Service", price="$45.00", quantity="720",
-                                          image=CardImage(url="https://github.com/amido/azure-vector-icons/raw/master/"
-                                                              "renders/cloud-service.png"))],
-                       tax="$7.50",
-                       total="90.95",
-                       buttons=[CardAction(type=ActionTypes.open_url, title="More Information",
-                                           value="https://azure.microsoft.com/en-us/pricing/details/bot-service/")]
-                       )
-    return CardFactory.receipt_card(card)
-
-
-def create_signin_card() -> Attachment:
-    card = SigninCard(text="BotFramework Sign-in Card", buttons=[CardAction(type=ActionTypes.signin,
-                                                                            title="Sign-in",
-                                                                            value="https://login.microsoftonline.com")])
-    return CardFactory.signin_card(card)
-
-
-def create_thumbnail_card() -> Attachment:
-    card = ThumbnailCard(title="BotFramework Thumbnail Card", subtitle="Your bots — wherever your users are talking",
-                         text="Build and connect intelligent bots to interact with your users naturally wherever"
-                              " they are, from text/sms to Skype, Slack, Office 365 mail and other popular services.",
-                         images=[CardImage(url="https://sec.ch9.ms/ch9/7ff5/"
-                                               "e07cfef0-aa3b-40bb-9baa-7c9ef8ff7ff5/"
-                                               "buildreactionbotframework_960.jpg")],
-                         buttons=[CardAction(type=ActionTypes.open_url, title="Get Started",
-                                             value="https://docs.microsoft.com/en-us/azure/bot-service/")])
-    return CardFactory.thumbnail_card(card)
-
+def create_lullaby_play() -> Attachment:
+    pass
 
 async def create_reply_activity(request_activity: Activity, text: str, attachment: Attachment = None) -> Activity:
     activity = Activity(
@@ -174,6 +96,7 @@ async def card_response(context: TurnContext) -> web.Response:
     choice_dict = {
         '1': [create_adaptive_card], 'check image': [create_adaptive_card],
         '2': [create_animation_card], 'monitor environment': [create_animation_card],
+        '3': [create_lullaby_play], 'lullaby', [create_lullaby_play]
     }
 
     # Get the functions that will generate the card(s) for our response
