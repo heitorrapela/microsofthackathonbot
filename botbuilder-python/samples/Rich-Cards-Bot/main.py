@@ -8,6 +8,7 @@ This sample shows how to use different types of rich cards.
 
 from aiohttp import web
 from pygame import mixer # Load the required library
+import webbrowser
 
 from botbuilder.schema import (Activity, ActivityTypes,
                                AnimationCard, AudioCard, Attachment,
@@ -45,11 +46,9 @@ def create_adaptive_card() -> Attachment:
     return CardFactory.adaptive_card(ADAPTIVE_CARD_CONTENT)
 
 
-def create_animation_card() -> Attachment:
-    card = AnimationCard(media=[MediaUrl(url='http://i.giphy.com/Ki55RUbOV5njy.gif')],
-                         title='Microsoft Bot Framework',
-                         subtitle='Animation Card')
-    return CardFactory.animation_card(card)
+def create_check_env() -> Attachment:
+    addr = "http://localhost:5522"
+    webbrowser.open_new(addr)
 
 def create_lullaby_play() -> Attachment:
     mixer.init()
@@ -104,7 +103,7 @@ async def card_response(context: TurnContext) -> web.Response:
     response = context.activity.text.strip()
     choice_dict = {
         '1': [create_adaptive_card], 'Check Image': [create_adaptive_card],
-        '2': [create_animation_card], 'Monitor Environment': [create_animation_card],
+        '2': [create_check_env], 'Monitor Environment': [create_check_env],
         '3': [create_lullaby_play], 'Play Lullaby': [create_lullaby_play],
         '4': [create_lullaby_stop], 'Stop Lullaby': [create_lullaby_play],
     }
