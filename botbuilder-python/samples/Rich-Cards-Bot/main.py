@@ -155,14 +155,16 @@ async def handle_message(context: TurnContext) -> web.Response:
             state.in_prompt = True
             prompt_message = await create_reply_activity(context.activity, 'Hello, what do you want to do?\n'
                                                                            '(1) Check Image\n'
-                                                                           '(2) Check Environment\n')
+                                                                           '(2) Check Environment\n'
+                                                                           '(3) Play Lullaby\n')
             await context.send_activity(prompt_message)
             return web.Response(status=202)
     else:
         state.in_prompt = True
         prompt_message = await create_reply_activity(context.activity, 'Hello, what do you want to do?\n'
                                                                        '(1) Check Image\n'
-                                                                       '(2) Check Environment\n')
+                                                                       '(2) Check Environment\n'
+                                                                       '(3) Play Lullaby\n')
         await context.send_activity(prompt_message)
         return web.Response(status=202)
 
