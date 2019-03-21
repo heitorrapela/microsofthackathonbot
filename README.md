@@ -6,7 +6,8 @@ conda env create -f mshack.yml
 
 conda activate mshack (source activate mshack)
 
-/home/$USER/anaconda2/envs/mshack/bin/pip install aiohttp
+/home/$USER/anaconda2/envs/mshack/bin/pip install yarl==0.7.1
+/home/$USER/anaconda2/envs/mshack/bin/pip install aiohttp==3.1
 
 ## Reference
 
