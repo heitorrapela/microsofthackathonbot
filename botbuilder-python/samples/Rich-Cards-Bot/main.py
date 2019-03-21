@@ -42,8 +42,17 @@ ADAPTER.use(conversation_state)
 
 
 # Methods to generate cards
-def create_adaptive_card() -> Attachment:
-    return CardFactory.adaptive_card(ADAPTIVE_CARD_CONTENT)
+def create_baby_check_card() -> Attachment:
+    #ret = func()
+    ret = 1
+    if (ret < 1):
+        msg = "Problem with baby"
+    elif (ret > 1):
+        msg = "More people wtih baby"
+    else:
+        msg = "Baby is ok"
+
+    return msg
 
 
 def create_check_env() -> Attachment:
@@ -102,7 +111,7 @@ async def handle_message(context: TurnContext) -> web.Response:
 async def card_response(context: TurnContext) -> web.Response:
     response = context.activity.text.strip()
     choice_dict = {
-        '1': [create_adaptive_card], 'Check Image': [create_adaptive_card],
+        '1': [create_baby_check_card], 'Check Image': [create_baby_check_card],
         '2': [create_check_env], 'Monitor Environment': [create_check_env],
         '3': [create_lullaby_play], 'Play Lullaby': [create_lullaby_play],
         '4': [create_lullaby_stop], 'Stop Lullaby': [create_lullaby_play],
@@ -116,6 +125,10 @@ async def card_response(context: TurnContext) -> web.Response:
         not_found = await create_reply_activity(context.activity, 'Sorry, I didn\'t understand that. :(')
         await context.send_activity(not_found)
         return web.Response(status=202)
+    elif (response == '1'):
+        msg = create_baby_check_card()
+        response = await create_reply_activity(context.activity, msg)
+        await context.send_activity(response)
     else:
         for func in choice:
             card = func()
