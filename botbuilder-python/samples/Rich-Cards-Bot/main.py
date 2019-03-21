@@ -55,7 +55,9 @@ def create_lullaby_play() -> Attachment:
     mixer.init()
     mixer.music.load('./twinkle_twinkle_little_star.mp3')
     mixer.music.play()
-    pass
+
+def create_lullaby_stop() -> Attachment:
+    mixer.music.stop()
 
 async def create_reply_activity(request_activity: Activity, text: str, attachment: Attachment = None) -> Activity:
     activity = Activity(
@@ -83,7 +85,8 @@ async def handle_message(context: TurnContext) -> web.Response:
             prompt_message = await create_reply_activity(context.activity, 'Hello, what do you want to do?\n'
                                                                            '(1) Check Image\n'
                                                                            '(2) Check Environment\n'
-                                                                           '(3) Play Lullaby\n')
+                                                                           '(3) Play Lullaby\n'
+                                                                           '(4) Stop Lullaby\n'    )
             await context.send_activity(prompt_message)
             return web.Response(status=202)
     else:
@@ -91,7 +94,8 @@ async def handle_message(context: TurnContext) -> web.Response:
         prompt_message = await create_reply_activity(context.activity, 'Hello, what do you want to do?\n'
                                                                        '(1) Check Image\n'
                                                                        '(2) Check Environment\n'
-                                                                       '(3) Play Lullaby\n')
+                                                                       '(3) Play Lullaby\n'
+                                                                       '(4) Stop Lullaby\n')
         await context.send_activity(prompt_message)
         return web.Response(status=202)
 
@@ -99,9 +103,10 @@ async def handle_message(context: TurnContext) -> web.Response:
 async def card_response(context: TurnContext) -> web.Response:
     response = context.activity.text.strip()
     choice_dict = {
-        '1': [create_adaptive_card], 'check image': [create_adaptive_card],
-        '2': [create_animation_card], 'monitor environment': [create_animation_card],
-        '3': [create_lullaby_play], 'lullaby': [create_lullaby_play],
+        '1': [create_adaptive_card], 'Check Image': [create_adaptive_card],
+        '2': [create_animation_card], 'Monitor Environment': [create_animation_card],
+        '3': [create_lullaby_play], 'Play Lullaby': [create_lullaby_play],
+        '4': [create_lullaby_stop], 'Stop Lullaby': [create_lullaby_play],
     }
 
     # Get the functions that will generate the card(s) for our response
