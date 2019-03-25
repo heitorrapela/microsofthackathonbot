@@ -1,2 +1,0 @@
-botFilePath="./<%= botFileName %>.bot"
-botFileSecret=""
