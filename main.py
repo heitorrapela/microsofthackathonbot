@@ -21,12 +21,7 @@ from botbuilder.schema import (Activity, ActivityTypes,
 from botbuilder.core import (BotFrameworkAdapter, BotFrameworkAdapterSettings, TurnContext,
                              ConversationState, MemoryStorage, UserState, CardFactory)
 
-import test
-from test import FlaskWrapper
-
-
-
-
+from detection import FlaskWrapper
 
 # Methods to generate cards
 def create_baby_check() -> Attachment:
@@ -41,7 +36,6 @@ def create_baby_check() -> Attachment:
         msg = "Baby is ok"
 
     return msg
-
 
 def create_check_env() -> Attachment:
     addr = "http://localhost:5522"
@@ -155,30 +149,32 @@ async def messages(req: web.web_request) -> web.Response:
         raise e
 
 
-APP_ID = ''
-APP_PASSWORD = ''
-PORT = 9000
-SETTINGS = BotFrameworkAdapterSettings(APP_ID, APP_PASSWORD)
-ADAPTER = BotFrameworkAdapter(SETTINGS)
+if __name__ == '__main__':
 
-# Create MemoryStorage, UserState and ConversationState
-memory = MemoryStorage()
-# Commented out user_state because it's not being used.
-# user_state = UserState(memory)
-conversation_state = ConversationState(memory)
-
-# Register both State middleware on the adapter.
-# Commented out user_state because it's not being used.
-# ADAPTER.use(user_state)
-ADAPTER.use(conversation_state)
-
-cameraServer = FlaskWrapper()
-cameraServer.runAll()
-
-app = web.Application()
-app.router.add_post('/', messages)
-
-try:
-    web.run_app(app, host='localhost', port=PORT)
-except Exception as e:
-    raise e
+    APP_ID = ''
+    APP_PASSWORD = ''
+    PORT = 9000
+    SETTINGS = BotFrameworkAdapterSettings(APP_ID, APP_PASSWORD)
+    ADAPTER = BotFrameworkAdapter(SETTINGS)
+    
+    # Create MemoryStorage, UserState and ConversationState
+    memory = MemoryStorage()
+    # Commented out user_state because it's not being used.
+    # user_state = UserState(memory)
+    conversation_state = ConversationState(memory)
+    
+    # Register both State middleware on the adapter.
+    # Commented out user_state because it's not being used.
+    # ADAPTER.use(user_state)
+    ADAPTER.use(conversation_state)
+    
+    cameraServer = FlaskWrapper()
+    cameraServer.runAll()
+    
+    app = web.Application()
+    app.router.add_post('/', messages)
+    
+    try:
+        web.run_app(app, host='localhost', port=PORT)
+    except Exception as e:
+        raise e

@@ -1,14 +1,11 @@
 import cv2
-from flask import Flask, render_template, Response
-import pdb
-import numpy as np       
+from flask import Flask, Response
 import dlib
 import time
 import datetime
 import threading
 from threading import Thread
 from pathlib import Path
-import dlib
 
 class FrameManager(object):
 	def __init__(self):
@@ -108,10 +105,6 @@ class FlaskWrapper(object):
 		self.app = Flask(__name__)
 		self.app.add_url_rule('/', view_func=self.video_feed)
 		self.app.add_url_rule('/warning', view_func=self.video_feed2)
-
-		
-
-
 		self.web_view = Thread(target=self.runApp,args=[])
 		self.update_frame = Thread(target=self.fmw.readThread,args=[])
 		self.upload_frame = Thread(target=self.fmw.uploadLoop,args=[])
