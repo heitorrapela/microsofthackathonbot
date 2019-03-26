@@ -2,9 +2,9 @@
 # Licensed under the MIT License.
 
 """
-This sample shows how to use different types of rich cards.
+Modified version of richard cards sample provided by Microsoft.
+SuperNanyBot -> Winner of Hackathon Bot-ando a mao na massa at CIn/UFPE 2019.
 """
-
 
 from aiohttp import web
 from pygame import mixer # Load the required library
@@ -20,194 +20,19 @@ from botbuilder.schema import (Activity, ActivityTypes,
                                Fact, ReceiptItem)
 from botbuilder.core import (BotFrameworkAdapter, BotFrameworkAdapterSettings, TurnContext,
                              ConversationState, MemoryStorage, UserState, CardFactory)
-"""Import AdaptiveCard content from adjacent file"""
-from adaptive_card_example import ADAPTIVE_CARD_CONTENT
 
-import cv2
-from flask import Flask, render_template, Response
-import pdb
-import numpy as np       
-import dlib
-import time
-import datetime
-import threading
-from threading import Thread
-#from pydrive.auth import GoogleAuth
-#from pydrive.drive import GoogleDrive
-from pathlib import Path
-
-class FrameManager(object):
-    def __init__(self):
-        self.lock = threading.Lock()
-        self.lock_save = threading.Lock()
-        self.to_upload = []
-        
-        self.cam = cv2.VideoCapture(0)
-        self.ret, self.frame = self.cam.read()
-        
-        #self.gauth = GoogleAuth()
-        #self.gauth.LocalWebserverAuth()
-        #self.drive = GoogleDrive(self.gauth)
-        #self.fid = "1YvqVtqvseQk_swQ1Qj0BBI3g8mgfYQmb"
-        
-    def update(self):	
-        self.lock.acquire()
-        try:
-            self.ret, self.frame = self.cam.read()
-        finally:
-            self.lock.release()
-            
-    def read(self):
-        self.lock.acquire()
-        frame = self.frame.copy()
-        self.lock.release()
-        return frame
-    
-    def __del__(self):
-        self.cam.release()
-        
-    def append_list(self, filePath):
-        self.lock_save.acquire()
-        self.to_upload.append(filePath)
-        self.lock_save.release()
-    
-    def pop_list(self):
-        pop = None
-        self.lock_save.acquire()
-        if len(self.to_upload) > 0:
-            pop = self.to_upload.pop(0)
-        self.lock_save.release()    
-        return pop
-    
-    def upload_file(self, filePath):
-        pathImg = Path(filePath)
-        imgName = pathImg.name
-        f = self.drive.CreateFile({'title': imgName,
-                              "parents": [{"kind": "drive#fileLink", "id": self.fid}]})
-        f.SetContentFile(filePath)
-        f.Upload()
-    
-    def upload(self, sleepTime=1.0):
-        while True:
-            imgName = self.pop_list()
-            if imgName:
-                print('\r'+ str(len(self.to_upload)) + ' ' + imgName, end='', flush=True)
-                #self.upload_file(imgName)
-            time.sleep(sleepTime)
-        
-        
-fm = FrameManager()
-
-def uploadLoop():
-    fm.upload()
-
-def readThread():
-    while(True):
-        fm.update()
-
-teste = None
-
-class Vision(object):
-    def __init__(self):
-        self.detector = dlib.get_frontal_face_detector()
-        self.dets = None
-    def get_det_frame(self):
-        global teste
-        image = fm.read()
-        st = datetime.datetime.fromtimestamp(time.time()).strftime('%Y_%m_%d_%H_%M_%S_%f')
-        
-        dets = self.detector(image, 1)
-        for faceRect in dets:
-            x1 = faceRect.left()
-            y1 = faceRect.top()
-            x2 = faceRect.right()
-            y2 = faceRect.bottom()
-            image = cv2.rectangle(image, (x1, y1), (x2, y2), (0,0,255))
-        if len(dets) >= 2:
-            st = 'log/'+st+'.jpg'
-            cv2.imwrite(st, image)
-            fm.append_list(st)
-        
-        ret, jpeg = cv2.imencode('.jpg', image)
-
-        teste = dets
-        return jpeg.tobytes()
-
-    def get():
-        return self.dets
-
-    def get_det_frame2(self):
-        image = fm.read()
-        st = datetime.datetime.fromtimestamp(time.time()).strftime('%Y_%m_%d_%H_%M_%S_%f')
-        
-        dets = self.detector(image, 1)
-        return len(dets)
-
-vis = Vision()
+import test
+from test import FlaskWrapper
 
 
-app = Flask(__name__)
-
-def gen():
-    while True:
-        frame = vis.get_det_frame()
-        yield (b'--frame\r\n'
-                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
-
-def gen2():
-    while True:
-        frame, tam = vis.get_det_frame2()
-        if(tam != 2):
-            yield (b'--frame\r\n'
-                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
-
-@app.route('/')
-def video_feed():
-    return Response(gen(),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
-
-@app.route('/warning')
-def video_feed2():
-    frame, tam = vis.get_det_frame2()
-    return str(tam)
 
 
-def runApp():
-    app.run(host='0.0.0.0',port=5522)
-
-web_view = Thread(target=runApp,args=[])
-update_frame = Thread(target=readThread,args=[])
-upload_frame = Thread(target=uploadLoop,args=[])
-
-update_frame.start()
-web_view.start()
-upload_frame.start()
-
-
-APP_ID = ''
-APP_PASSWORD = ''
-PORT = 9000
-SETTINGS = BotFrameworkAdapterSettings(APP_ID, APP_PASSWORD)
-ADAPTER = BotFrameworkAdapter(SETTINGS)
-
-# Create MemoryStorage, UserState and ConversationState
-memory = MemoryStorage()
-# Commented out user_state because it's not being used.
-# user_state = UserState(memory)
-conversation_state = ConversationState(memory)
-
-# Register both State middleware on the adapter.
-# Commented out user_state because it's not being used.
-# ADAPTER.use(user_state)
-ADAPTER.use(conversation_state)
-
-import dlib
 
 # Methods to generate cards
-def create_baby_check_card() -> Attachment:
-    global teste, vis
+def create_baby_check() -> Attachment:
+    global cameraServer
     
-    ret = vis.get_det_frame2()
+    ret = cameraServer.vis.get_det_frame2()
     if (ret < 1):
         msg = "Problem with baby"
     elif (ret > 1):
@@ -274,7 +99,7 @@ async def handle_message(context: TurnContext) -> web.Response:
 async def card_response(context: TurnContext) -> web.Response:
     response = context.activity.text.strip()
     choice_dict = {
-        '1': [create_baby_check_card], 'Check Image': [create_baby_check_card],
+        '1': [create_baby_check], 'Check Image': [create_baby_check],
         '2': [create_check_env], 'Monitor Environment': [create_check_env],
         '3': [create_lullaby_play], 'Play Lullaby': [create_lullaby_play],
         '4': [create_lullaby_stop], 'Stop Lullaby': [create_lullaby_play],
@@ -289,7 +114,7 @@ async def card_response(context: TurnContext) -> web.Response:
         await context.send_activity(not_found)
         return web.Response(status=202)
     elif (response == '1'):
-        msg = create_baby_check_card()
+        msg = create_baby_check()
         response = await create_reply_activity(context.activity, msg)
         await context.send_activity(response)
     else:
@@ -329,6 +154,26 @@ async def messages(req: web.web_request) -> web.Response:
     except Exception as e:
         raise e
 
+
+APP_ID = ''
+APP_PASSWORD = ''
+PORT = 9000
+SETTINGS = BotFrameworkAdapterSettings(APP_ID, APP_PASSWORD)
+ADAPTER = BotFrameworkAdapter(SETTINGS)
+
+# Create MemoryStorage, UserState and ConversationState
+memory = MemoryStorage()
+# Commented out user_state because it's not being used.
+# user_state = UserState(memory)
+conversation_state = ConversationState(memory)
+
+# Register both State middleware on the adapter.
+# Commented out user_state because it's not being used.
+# ADAPTER.use(user_state)
+ADAPTER.use(conversation_state)
+
+cameraServer = FlaskWrapper()
+cameraServer.runAll()
 
 app = web.Application()
 app.router.add_post('/', messages)
