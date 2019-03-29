@@ -1,4 +1,0 @@
-lib/
-.npmrc
-.env*
-!.env.development
