@@ -37,3 +37,19 @@ For Hackathon we did a chatbot project to take care of babies with the following
 [Botbuilder-Samples](https://github.com/Microsoft/BotBuilder-Samples/blob/master/README.md)
 [UFPE News](https://www.ufpe.br/agencia/noticias/-/asset_publisher/VQX2pzmP0mP4/content/microsoft-realiza-recrutamento-no-centro-de-informatica/40615)
 
+### Please Feel Free to Contact Us!
+
+**Heitor Rapela** ([GitHub :octocat:](https://github.com/heitorrapela))
+  
+![](https://github.com/heitorrapela.png?size=230)  
+**hrm@cin.ufpe.br**
+
+**Renie de Azevedo** ([GitHub :octocat:](https://github.com/R3NI3))
+  
+![](https://github.com/R3NI3.png?size=230)  
+**rad@cin.ufpe.br**
+
+**Carlos Pena** ([GitHub :octocat:](https://github.com/CarlosPena00))
+  
+![](https://github.com/CarlosPena00.png?size=230)  
+**chcp@cin.ufpe.br**
