@@ -14,16 +14,8 @@ For Hackathon we did a chatbot project to take care of babies with the following
 
     conda env create -f mshack.yml
     conda activate mshack
-    /home/$USER/anaconda2/envs/mshack/bin/pip install yarl==0.7.1
-    /home/$USER/anaconda2/envs/mshack/bin/pip install aiohttp==3.1
-
-    Now, you need to run .sh script to install botbuilder-python:
-    sudo chmod +x pip_install.sh
-    ./pip_install.sh
-
-## Testing if the install was succesfull:
-    
-    pytest
+    ## If you install inside your mshack env using: pip install -r requirements.txt
+  	## You will need to run inside your env: conda install -c menpo opencv3=3.1.0
 
 ## Run code:
     
@@ -34,7 +26,9 @@ For Hackathon we did a chatbot project to take care of babies with the following
 ## References
 
 [Botbuilder-Python](https://github.com/Microsoft/botbuilder-python) 
+
 [Botbuilder-Samples](https://github.com/Microsoft/BotBuilder-Samples/blob/master/README.md)
+
 [UFPE News](https://www.ufpe.br/agencia/noticias/-/asset_publisher/VQX2pzmP0mP4/content/microsoft-realiza-recrutamento-no-centro-de-informatica/40615)
 
 ### Please Feel Free to Contact Us!
