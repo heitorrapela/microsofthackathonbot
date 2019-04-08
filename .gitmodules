@@ -1,0 +1,3 @@
+[submodule "botbuilder-python"]
+	path = botbuilder-python
+	url = https://github.com/Microsoft/botbuilder-python.git
